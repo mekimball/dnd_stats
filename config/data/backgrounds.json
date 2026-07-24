@@ -1,0 +1,368 @@
+[
+  {
+    "name": "Acolyte",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Magic Initiate (Cleric)",
+    "description": "Devoted to a temple or deity, learning divine rituals and faith."
+  },
+  {
+    "name": "Artisan",
+    "attributes": ["STR", "DEX", "INT"],
+    "feat": "Crafter",
+    "description": "Apprenticed in a trade, creating crafts and managing business."
+  },
+  {
+    "name": "Charlatan",
+    "attributes": ["DEX", "CON", "CHA"],
+    "feat": "Skilled",
+    "description": "A master of manipulation and deception, seeking out marks in taverns and markets."
+  },
+  {
+    "name": "Criminal",
+    "attributes": ["DEX", "CON", "INT"],
+    "feat": "Alert",
+    "description": "Experienced in surviving outside the law and navigating the urban underbelly."
+  },
+  {
+    "name": "Entertainer",
+    "attributes": ["STR", "DEX", "CHA"],
+    "feat": "Musician",
+    "description": "Thrives on performance and showmanship to captivate and inspire audiences."
+  },
+  {
+    "name": "Farmer",
+    "attributes": ["STR", "CON", "WIS"],
+    "feat": "Tough",
+    "description": "Cultivated the land and tended animals, gaining a deep respect for nature."
+  },
+  {
+    "name": "Guard",
+    "attributes": ["STR", "INT", "WIS"],
+    "feat": "Alert",
+    "description": "Spent time standing watch, trained to spot danger and protect city gates."
+  },
+  {
+    "name": "Guide",
+    "attributes": ["DEX", "CON", "WIS"],
+    "feat": "Magic Initiate (Druid)",
+    "description": "Explored the outdoors and natural wilderness, channeling primal magic."
+  },
+  {
+    "name": "Hermit",
+    "attributes": ["CON", "WIS", "CHA"],
+    "feat": "Healer",
+    "description": "Lived in solitude outside society, contemplating creation and spiritual arts."
+  },
+  {
+    "name": "Merchant",
+    "attributes": ["CON", "INT", "CHA"],
+    "feat": "Lucky",
+    "description": "Traded goods and managed commerce, possessing keen business instincts."
+  },
+  {
+    "name": "Noble",
+    "attributes": ["STR", "INT", "CHA"],
+    "feat": "Skilled",
+    "description": "Raised in high society, well-versed in diplomacy, history, and courtly customs."
+  },
+  {
+    "name": "Sage",
+    "attributes": ["CON", "INT", "WIS"],
+    "feat": "Magic Initiate (Wizard)",
+    "description": "Studied in great libraries and archives, learning magic and historical lore."
+  },
+  {
+    "name": "Sailor",
+    "attributes": ["STR", "DEX", "WIS"],
+    "feat": "Tavern Brawler",
+    "description": "Called the open water home, surviving harsh storms and rough harbor life."
+  },
+  {
+    "name": "Scribe",
+    "attributes": ["DEX", "INT", "WIS"],
+    "feat": "Skilled",
+    "description": "Focused on copying texts and documents with a finely honed eye for detail."
+  },
+  {
+    "name": "Soldier",
+    "attributes": ["STR", "DEX", "CON"],
+    "feat": "Savage Attacker",
+    "description": "Trained in battle and warfare, built on physical strength and combat experience."
+  },
+  {
+    "name": "Wayfarer",
+    "attributes": ["DEX", "WIS", "CHA"],
+    "feat": "Lucky",
+    "description": "Wandered street corners or distant roads, relying on stealth, insight, and luck."
+  },
+  {
+    "name": "Chondathan Freebooter",
+    "attributes": ["STR", "DEX", "CON"],
+    "feat": "Skilled",
+    "description": "A privateer and rover hailing from the waterways and forests of Chondath."
+  },
+  {
+    "name": "Dead Magic Dweller",
+    "attributes": ["CON", "WIS", "CHA"],
+    "feat": "Healer",
+    "description": "Accustomed to surviving in desolate zones where magic fails or behaves wildly."
+  },
+  {
+    "name": "Dragon Cultist",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Cult of the Dragon Initiate",
+    "description": "Infiltrated or served within secretive cults dedicated to draconic overlords."
+  },
+  {
+    "name": "Emerald Enclave Caretaker",
+    "attributes": ["DEX", "CON", "WIS"],
+    "feat": "Emerald Enclave Fledgling",
+    "description": "Sworn to protect wild sanctuaries and preserve natural harmony."
+  },
+  {
+    "name": "Flaming Fist Mercenary",
+    "attributes": ["STR", "DEX", "CON"],
+    "feat": "Alert",
+    "description": "A battle-tested veteran of Baldur's Gate's fierce mercenary company."
+  },
+  {
+    "name": "Genie Touched",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Magic Initiate",
+    "description": "Marked by planar energy or ancestral pacts with elemental genies."
+  },
+  {
+    "name": "Harper",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Harper Agent",
+    "description": "A covert agent dedicated to thwarting tyranny and safeguarding secret lore."
+  },
+  {
+    "name": "Ice Fisher",
+    "attributes": ["STR", "DEX", "CON"],
+    "feat": "Alert",
+    "description": "A hardened survivalist from frozen northern lakes and icy mountain wastes."
+  },
+  {
+    "name": "Knight of the Gauntlet",
+    "attributes": ["STR", "INT", "WIS"],
+    "feat": "Tyro of the Gauntlet",
+    "description": "A holy warrior aligned with the Order of the Gauntlet to root out evil."
+  },
+  {
+    "name": "Lords' Alliance Vassal",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Lords' Alliance Agent",
+    "description": "A diplomatic representative working to maintain harmony between allied city-states."
+  },
+  {
+    "name": "Moonwell Pilgrim",
+    "attributes": ["CON", "WIS", "CHA"],
+    "feat": "Magic Initiate (Druid)",
+    "description": "Bound to the mystical waters and natural guardian spirits of the Moonshae Isles."
+  },
+  {
+    "name": "Mulhorandi Tomb Raider",
+    "attributes": ["STR", "DEX", "INT"],
+    "feat": "Tough",
+    "description": "An adventurer who braves ancient desert tombs and crypts in search of ancient relics."
+  },
+  {
+    "name": "Mythalkeeper",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Magic Initiate (Wizard)",
+    "description": "A scholar dedicated to studying, maintaining, and protecting ancient high-elven mythals."
+  },
+  {
+    "name": "Purple Dragon Squire",
+    "attributes": ["STR", "DEX", "CHA"],
+    "feat": "Savage Attacker",
+    "description": "Trained in the honorable martial traditions and knightly discipline of Cormyr."
+  },
+  {
+    "name": "Rashemi Wanderer",
+    "attributes": ["STR", "CON", "WIS"],
+    "feat": "Tough",
+    "description": "A tough traveler steeped in the ancestral spirit magic and rugged traditions of Rashemen."
+  },
+  {
+    "name": "Shadowmasters Exile",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Alert",
+    "description": "A rogue or survivor on the run from Telflamme's notorious shadow guild."
+  },
+  {
+    "name": "Zhentarim Mercenary",
+    "attributes": ["STR", "DEX", "CHA"],
+    "feat": "Zhentarim Ruffian",
+    "description": "An operative connected to the Black Network, balancing ruthlessness and profit."
+  },
+  {
+    "name": "Amnesiac",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Memory Starved",
+    "description": "Awakened with lost memories, slowly piecing together a mysterious past."
+  },
+  {
+    "name": "Crimson Aspirant",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Crimson Ritualist",
+    "description": "Studied forbidden hemomancy and the vitality-manipulating arts of blood."
+  },
+  {
+    "name": "Crossroads Gambler",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Lucky",
+    "description": "Pledged a midnight wager at a lonely crossroads and walked away alive."
+  },
+  {
+    "name": "Cultist",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Cult Initiate",
+    "description": "Indoctrinated into dark rites and sworn to the service of eldritch entities."
+  },
+  {
+    "name": "Druskenvald Dweller",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Alert",
+    "description": "A native to the horror-ridden lands of Druskenvald, attuned to local dangers."
+  },
+  {
+    "name": "Experiment",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Altered",
+    "description": "Physically transformed by strange alchemy, arcane science, or monstrous influence."
+  },
+  {
+    "name": "Ghostlight Passenger",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Ghostlight Medium",
+    "description": "Rode the phantom Ghostlight Express, forming a link with departed souls."
+  },
+  {
+    "name": "Night Stalker",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Hunter of Hunters",
+    "description": "Stalks creatures of darkness in misty woods and shadowed ruins."
+  },
+  {
+    "name": "Reflected Wanderer",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Unreflected",
+    "description": "Separated from your own shadow or mirror image, living a fractured life."
+  },
+  {
+    "name": "Rest Warden",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Grave Keeper",
+    "description": "A gravedigger or undertaker who ensures the dead stay peacefully buried."
+  },
+  {
+    "name": "Reveler",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Musician",
+    "description": "A traveler of wild nocturnal festivals and eerie, forgotten carnivals."
+  },
+  {
+    "name": "Scholar of the Forbidden",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Magic Initiate",
+    "description": "Uncovered taboo occult texts and lore that traditional academies shun."
+  },
+  {
+    "name": "Wicker Weaver",
+    "attributes": ["STR", "DEX", "CON", "INT", "WIS", "CHA"],
+    "feat": "Crafter",
+    "description": "Crafts effigies, pagan icons, and wicker talismans to ward off dark spirits."
+  },
+  {
+    "name": "Beast Hunter",
+    "attributes": ["STR", "DEX", "INT"],
+    "feat": "Blood Hound",
+    "description": "Tracks down terrifying beasts and nocturnal threats in grim lands."
+  },
+  {
+    "name": "Disinherited Noble",
+    "attributes": ["STR", "INT", "CHA"],
+    "feat": "Skilled",
+    "description": "Stripped of title, land, and wealth, driven to reclaim lost birthrights."
+  },
+  {
+    "name": "Expelled Academy Member",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Magic Initiate",
+    "description": "Cast out from magical institutions for pursuing dangerous or unethical research."
+  },
+  {
+    "name": "Free Enterprise Infiltrator",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Alert",
+    "description": "Navigates corporate cartels, crime syndicates, and black-market intrigue."
+  },
+  {
+    "name": "Inquisitor Apprentice",
+    "attributes": ["STR", "INT", "WIS"],
+    "feat": "Convincing Inquisitor",
+    "description": "Trained under zealous inquisitors to purge heresy and demonic taint."
+  },
+  {
+    "name": "Pox Doctor",
+    "attributes": ["CON", "INT", "WIS"],
+    "feat": "Healer",
+    "description": "Treats plague victims and handles morbid afflictions using grim medical methods."
+  },
+  {
+    "name": "Carouser",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Tireless Reveler",
+    "description": "Grew up in the heart of a large city, navigating taverns, parlors, and high-stakes social circles."
+  },
+  {
+    "name": "Vampire Devotee",
+    "attributes": ["STR", "CON", "CHA"],
+    "feat": "Vampire's Plaything",
+    "description": "Served in a lair of vampires, repeatedly fed upon as a familiar or aspiring undead."
+  },
+  {
+    "name": "Vampire Survivor",
+    "attributes": ["DEX", "CON", "WIS"],
+    "feat": "Vampire Hunter",
+    "description": "Lived through a horrific vampire encounter, keeping a vigilant watch against monster attacks."
+  },
+  {
+    "name": "Lorwyn Expert",
+    "attributes": ["STR", "CON", "WIS"],
+    "feat": "Child of the Sun",
+    "description": "Hails from Lorwyn or studied its eternal sunshine, embarking on whimsical adventures and holding loved ones close."
+  },
+  {
+    "name": "Shadowmoor Expert",
+    "attributes": ["DEX", "INT", "CHA"],
+    "feat": "Shadowmoor Hexer",
+    "description": "Survives or studies the gloomy, moonlight-lit realm of Shadowmoor using wit, cunning, or brawn while carefully choosing whom to trust."
+  },
+  {
+    "name": "Haunted One",
+    "attributes": ["CON", "WIS", "CHA"],
+    "feat": "Survivor or Dark Gift",
+    "description": "Bears the unshakable, painful weight of past tragic events that cannot be buried, slain, or banished."
+  },
+  {
+    "name": "Investigator",
+    "attributes": ["INT", "WIS", "CHA"],
+    "feat": "Sharp Eye or Dark Gift",
+    "description": "Relentlessly seeks truth and unravels local crimes or eldritch conspiracies others wish to keep hidden."
+  },
+  {
+    "name": "Mist Wanderer",
+    "attributes": ["DEX", "CON", "WIS"],
+    "feat": "Dark Gift (Mist Walker recommended)",
+    "description": "Drawn by the Mists into a Domain of Dread, wandering between cursed realms in search of a way home."
+  },
+  {
+    "name": "Spirit Medium",
+    "attributes": ["CON", "INT", "WIS"],
+    "feat": "Dark Gift (Gathered Whispers recommended)",
+    "description": "Serves as a conduit for spirits of the dead and damned, drawing prescient insight that comes at a haunting cost."
+  }
+]
