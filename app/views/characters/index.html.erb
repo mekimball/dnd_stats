@@ -1,0 +1,65 @@
+<div class="max-w-5xl mx-auto p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-slate-800">Characters</h1>
+    <%= link_to "New Character", new_character_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition" %>
+  </div>
+
+  <% if @characters.empty? %>
+    <!-- Empty State -->
+    <div class="text-center py-12 bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg">
+      <svg class="mx-auto h-12 w-12 text-slate-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      <h3 class="text-lg font-medium text-slate-900 mb-1">No characters built yet</h3>
+      <p class="text-slate-500 mb-4">Get started by creating your first Level 1 character.</p>
+      <%= link_to "Build a Character", new_character_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded" %>
+    </div>
+  <% else %>
+    <!-- Character Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @characters.each do |character| %>
+        <div class="border rounded-lg shadow-sm bg-white overflow-hidden hover:shadow-md transition">
+
+          <!-- Card Header with Name & Combat Badges -->
+          <div class="bg-slate-800 text-white p-4 flex justify-between items-start">
+            <div>
+              <h2 class="text-xl font-bold"><%= character.name %></h2>
+              <p class="text-xs text-slate-300 capitalize">
+                Level <%= character.level %> <%= character.species&.name %> <%= character.character_class&.name %>
+              </p>
+            </div>
+
+            <!-- AC and HP Badges -->
+            <div class="flex gap-1">
+              <span class="bg-indigo-900 text-indigo-200 font-bold text-xs px-2 py-1 rounded border border-indigo-700">
+                AC <%= character.armor_class %>
+              </span>
+              <span class="bg-green-500 text-slate-900 font-bold text-xs px-2 py-1 rounded">
+                HP <%= character.max_hp %>
+              </span>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <!-- Stat Overview -->
+            <div class="grid grid-cols-6 gap-1 text-center bg-slate-50 p-2 rounded mb-4 text-xs font-mono">
+              <div><span class="block text-slate-400">STR</span><%= character.effective_stat(:strength) %></div>
+              <div><span class="block text-slate-400">DEX</span><%= character.effective_stat(:dexterity) %></div>
+              <div><span class="block text-slate-400">CON</span><%= character.effective_stat(:constitution) %></div>
+              <div><span class="block text-slate-400">INT</span><%= character.effective_stat(:intelligence) %></div>
+              <div><span class="block text-slate-400">WIS</span><%= character.effective_stat(:wisdom) %></div>
+              <div><span class="block text-slate-400">CHA</span><%= character.effective_stat(:charisma) %></div>
+            </div>
+
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-slate-500 text-xs">
+                Background: <%= character.background&.name || "None" %>
+              </span>
+              <%= link_to "View Sheet →", character_path(character), class: "text-indigo-600 hover:text-indigo-800 font-semibold" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

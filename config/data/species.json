@@ -1,0 +1,39 @@
+[
+  {
+    "id": "human",
+    "name": "Human",
+    "speed": 30,
+    "size_options": ["Medium", "Small"],
+    "traits": ["Resourceful", "Skillful", "Versatile"],
+    "extra_skill_count": 1,
+    "origin_feat_granted": true,
+    "description": "Resourceful, skillful, and versatile innovators found across the multiverse."
+  },
+  {
+    "id": "elf",
+    "name": "Elf",
+    "speed": 30,
+    "size": "Medium",
+    "traits": ["Darkvision (60 ft)", "Elven Lineage", "Fey Ancestry", "Keen Senses", "Trance"],
+    "keen_senses_choices": ["insight", "perception", "survival"],
+    "lineages": [
+      {
+        "id": "drow",
+        "name": "Drow",
+        "darkvision": 120,
+        "spells": { "1": "Dancing Lights", "3": "Faerie Fire", "5": "Darkness" }
+      },
+      {
+        "id": "high_elf",
+        "name": "High Elf",
+        "spells": { "1": "Prestidigitation", "3": "Detect Magic", "5": "Misty Step" }
+      },
+      {
+        "id": "wood_elf",
+        "name": "Wood Elf",
+        "speed_bonus": 5,
+        "spells": { "1": "Druidcraft", "3": "Longstrider", "5": "Pass without Trace" }
+      }
+    ]
+  }
+]

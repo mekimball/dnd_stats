@@ -1,0 +1,246 @@
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Top Navigation -->
+  <div class="flex justify-between items-center mb-6">
+    <%= link_to "← Back to Characters", characters_path, class: "text-slate-600 hover:text-slate-900 font-semibold text-sm" %>
+    <div class="flex gap-2">
+      <%= link_to "Edit", edit_character_path(@character), class: "bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-4 py-2 rounded text-sm transition" if respond_to?(:edit_character_path) %>
+    </div>
+  </div>
+
+  <!-- Character Banner & Vital Combat Stats -->
+  <div class="bg-slate-900 text-white rounded-t-xl p-6 shadow-md flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+    <div>
+      <h1 class="text-4xl font-extrabold tracking-tight mb-1"><%= @character.name %></h1>
+      <p class="text-indigo-300 font-medium text-lg">
+        Level <%= @character.level %> <%= @character.species&.name %>
+        <%= @character.subclass_name || @character.character_class&.name %>
+        <% if @character.subclass_name.present? %>
+          <span class="text-xs text-indigo-400 font-normal">(<%= @character.character_class&.name %>)</span>
+        <% end %>
+      </p>
+    </div>
+
+    <!-- Combat Stats Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-800 border border-slate-700 p-3 rounded-lg text-center w-full lg:w-auto">
+      <!-- Max HP -->
+      <div class="px-2">
+        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Max HP</span>
+        <span class="text-2xl font-black text-green-400"><%= @character.max_hp %></span>
+      </div>
+
+      <!-- Armor Class -->
+      <div class="px-2 border-l border-slate-700">
+        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Armor Class</span>
+        <span class="text-2xl font-black text-indigo-300"><%= @character.armor_class %></span>
+      </div>
+
+      <!-- Initiative -->
+      <div class="px-2 border-l border-slate-700">
+        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Initiative</span>
+        <% init = @character.initiative %>
+        <span class="text-2xl font-black text-slate-200"><%= init >= 0 ? "+#{init}" : init %></span>
+      </div>
+
+      <!-- Speed -->
+      <div class="px-2 border-l border-slate-700">
+        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Speed</span>
+        <span class="text-2xl font-black text-slate-200"><%= @character.species&.speed || 30 %> <span class="text-xs font-normal">ft</span></span>
+      </div>
+
+      <!-- Passive Perception -->
+      <div class="px-2 border-l border-slate-700 col-span-2 sm:col-span-1">
+        <span class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Passive WIS</span>
+        <span class="text-2xl font-black text-amber-300"><%= @character.passive_perception %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Sheet Card -->
+  <div class="bg-white border-x border-b border-slate-200 rounded-b-xl p-6 shadow-sm mb-8 space-y-6">
+
+    <!-- Ability Scores Grid -->
+    <div>
+      <h2 class="text-xs font-extrabold tracking-wider text-slate-400 uppercase mb-3">Ability Scores</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        <% [
+             [:strength, "STR"],
+             [:dexterity, "DEX"],
+             [:constitution, "CON"],
+             [:intelligence, "INT"],
+             [:wisdom, "WIS"],
+             [:charisma, "CHA"]
+           ].each do |stat_key, label| %>
+          <% score = @character.effective_stat(stat_key) %>
+          <% mod = @character.modifier_for(stat_key) %>
+          <% mod_str = mod >= 0 ? "+#{mod}" : "#{mod}" %>
+
+          <div class="border border-slate-200 bg-slate-50/70 rounded-lg p-3 text-center shadow-xs">
+            <span class="block text-[10px] font-extrabold text-slate-500 tracking-wider"><%= label %></span>
+            <span class="block text-2xl font-black text-slate-900 my-0.5"><%= mod_str %></span>
+            <span class="text-xs font-semibold text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-full inline-block">
+              <%= score %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Features & Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Class Info -->
+      <div class="border rounded-lg p-4 bg-slate-50/30">
+        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span>🛡️</span> Class Info
+        </h3>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between border-b pb-1">
+            <dt class="text-slate-500">Primary Ability:</dt>
+            <dd class="font-semibold text-slate-800"><%= @character.character_class&.primary_ability %></dd>
+          </div>
+          <div class="flex justify-between border-b pb-1">
+            <dt class="text-slate-500">Saving Throws:</dt>
+            <dd class="font-semibold text-slate-800 capitalize"><%= @character.character_class&.saving_throws&.join(", ") %></dd>
+          </div>
+          <div class="flex justify-between border-b pb-1">
+            <dt class="text-slate-500">Armor Proficiencies:</dt>
+            <dd class="font-semibold text-slate-800"><%= @character.character_class&.armor_proficiencies&.join(", ") %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-slate-500">Weapon Proficiencies:</dt>
+            <dd class="font-semibold text-slate-800"><%= @character.character_class&.weapon_proficiencies&.join(", ") %></dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Species & Traits -->
+      <div class="border rounded-lg p-4 bg-slate-50/30">
+        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span>🧬</span> Species Traits
+        </h3>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between border-b pb-1">
+            <dt class="text-slate-500">Base Speed:</dt>
+            <dd class="font-semibold text-slate-800"><%= @character.species&.speed %> ft.</dd>
+          </div>
+          <div>
+            <dt class="text-slate-500 mb-1">Traits:</dt>
+            <dd class="flex flex-wrap gap-1">
+              <% (@character.species&.traits || []).each do |trait| %>
+                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-indigo-200">
+                  <%= trait %>
+                </span>
+              <% end %>
+            </dd>
+          </div>
+        </dl>
+
+        <% if @character.background.present? %>
+          <div class="mt-4 pt-3 border-t">
+            <h4 class="font-bold text-slate-700 text-sm mb-1">Background</h4>
+            <p class="text-sm font-medium text-slate-600"><%= @character.background.name %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Equipment Block (Spans full width) -->
+      <div class="border rounded-lg p-4 bg-slate-50/30 md:col-span-2">
+        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span>⚔️</span> Inventory & Equipment
+        </h3>
+
+        <% if @character.equipment.present? %>
+          <div class="flex flex-wrap gap-2">
+            <% @character.equipment.each do |item| %>
+              <span class="inline-flex items-center gap-1 bg-white border border-slate-300 font-semibold text-slate-800 text-xs px-3 py-1.5 rounded-md shadow-xs">
+                <span>🎒</span> <%= item %>
+              </span>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-xs text-slate-400 italic">No equipment recorded.</p>
+        <% end %>
+      </div>
+
+      <!-- Unlocked Features Section (Full Width) -->
+      <div class="border rounded-lg p-4 bg-slate-50/30 md:col-span-2">
+        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span>✨</span> Unlocked Features
+        </h3>
+
+        <!-- Class Features -->
+        <div class="mb-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+            <%= @character.character_class&.name %> Features (Lv 1–<%= @character.level %>)
+          </h4>
+          <% class_feats = @character.unlocked_class_features %>
+          <% if class_feats.any? %>
+            <div class="flex flex-wrap gap-2">
+              <% class_feats.each do |feature| %>
+                <span class="bg-indigo-50 border border-indigo-200 text-indigo-900 font-medium text-xs px-2.5 py-1 rounded-md shadow-2xs">
+                  <%= feature %>
+                </span>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-xs text-slate-400 italic">No class features unlocked.</p>
+          <% end %>
+        </div>
+
+        <!-- Subclass Features -->
+        <% if @character.subclass_name.present? %>
+          <div class="pt-3 border-t">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 mb-2">
+              <%= @character.subclass_name %> Features
+            </h4>
+            <% sub_feats = @character.unlocked_subclass_features %>
+            <% if sub_feats.any? %>
+              <div class="flex flex-wrap gap-2">
+                <% sub_feats.each do |feature| %>
+                  <span class="bg-amber-50 border border-amber-200 text-amber-900 font-medium text-xs px-2.5 py-1 rounded-md shadow-2xs">
+                    <%= feature %>
+                  </span>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-xs text-slate-400 italic">No subclass features unlocked yet.</p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Skills Block (Spans full width) -->
+      <div class="border rounded-lg p-4 bg-slate-50/30 md:col-span-2">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span>🎯</span> Skills
+          </h3>
+          <span class="text-xs font-bold text-slate-500 bg-slate-200 px-2.5 py-1 rounded">
+            Proficiency Bonus: +<%= @character.proficiency_bonus %>
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          <% Character::SKILLS.each do |skill_name, stat_key| %>
+            <% is_proficient = @character.proficient_in_skill?(skill_name) %>
+            <% mod = @character.skill_modifier(skill_name) %>
+            <% mod_str = mod >= 0 ? "+#{mod}" : "#{mod}" %>
+
+            <div class="flex items-center justify-between p-2 rounded border <%= is_proficient ? 'bg-indigo-50/70 border-indigo-200 font-bold' : 'bg-white border-slate-200 text-slate-600' %> text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full <%= is_proficient ? 'bg-indigo-600' : 'border border-slate-300' %>"></span>
+                <span class="capitalize"><%= skill_name.to_s.tr("_", " ") %></span>
+                <span class="text-[10px] text-slate-400 uppercase font-mono">(<%= stat_key.to_s[0..2] %>)</span>
+              </div>
+
+              <span class="font-mono text-sm <%= is_proficient ? 'text-indigo-900 font-black' : 'text-slate-700' %>">
+                <%= mod_str %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

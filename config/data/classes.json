@@ -1,0 +1,102 @@
+[
+  {
+    "id": "fighter",
+    "name": "Fighter",
+    "hit_die": 10,
+    "primary_ability": "Strength or Dexterity",
+    "saving_throws": ["strength", "constitution"],
+    "armor_proficiencies": ["Light", "Medium", "Heavy", "Shields"],
+    "weapon_proficiencies": ["Simple weapons", "Martial weapons"],
+    "skill_choices": ["acrobatics", "animal_handling", "athletics", "history", "insight", "intimidation", "perception", "persuasion", "survival"],
+    "skill_count": 2,
+    "starting_equipment": {
+      "loadout_a": ["Chain Mail", "Greatsword", "Flail", "8 Javelins", "Dungeoneer's Pack", "4 GP"],
+      "loadout_b": ["Studded Leather Armor", "Scimitar", "Shortsword", "Longbow & 20 Arrows", "Dungeoneer's Pack", "11 GP"],
+      "loadout_c": ["155 GP"]
+    },
+    "features": {
+      "1": ["Fighting Style", "Second Wind (2 uses)", "Weapon Mastery (3 weapons)"],
+      "2": ["Action Surge (1 use)", "Tactical Mind"],
+      "3": ["Fighter Subclass"],
+      "4": ["Ability Score Improvement / Feat"],
+      "5": ["Extra Attack", "Tactical Shift"],
+      "6": ["Ability Score Improvement / Feat"],
+      "7": ["Subclass Feature"],
+      "8": ["Ability Score Improvement / Feat"],
+      "9": ["Indomitable (1 use)", "Tactical Master"],
+      "10": ["Subclass Feature"],
+      "11": ["Two Extra Attacks"],
+      "12": ["Ability Score Improvement / Feat"],
+      "13": ["Indomitable (2 uses)", "Studied Attacks"],
+      "14": ["Ability Score Improvement / Feat"],
+      "15": ["Subclass Feature"],
+      "16": ["Ability Score Improvement / Feat"],
+      "17": ["Action Surge (2 uses)", "Indomitable (3 uses)"],
+      "18": ["Subclass Feature"],
+      "19": ["Epic Boon"],
+      "20": ["Three Extra Attacks"]
+    },
+    "subclasses": [
+      {
+        "id": "champion",
+        "name": "Champion",
+        "features": {
+          "3": ["Improved Critical (19-20)", "Remarkable Athlete"],
+          "7": ["Additional Fighting Style"],
+          "10": ["Heroic Warrior"],
+          "15": ["Superior Critical (18-20)"],
+          "18": ["Survivor (Defy Death, Heroic Rally)"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "wizard",
+    "name": "Wizard",
+    "hit_die": 6,
+    "primary_ability": "Intelligence",
+    "saving_throws": ["intelligence", "wisdom"],
+    "armor_proficiencies": ["None"],
+    "weapon_proficiencies": ["Simple weapons"],
+    "skill_choices": ["arcana", "history", "insight", "investigation", "medicine", "nature", "religion"],
+    "skill_count": 2,
+    "starting_equipment": {
+      "loadout_a": ["2 Daggers", "Arcane Focus (Quarterstaff)", "Robe", "Spellbook", "Scholar's Pack", "5 GP"],
+      "loadout_b": ["55 GP"]
+    },
+    "features": {
+      "1": ["Spellcasting", "Ritual Adept", "Arcane Recovery"],
+      "2": ["Scholar (Expertise)"],
+      "3": ["Wizard Subclass"],
+      "4": ["Ability Score Improvement / Feat"],
+      "5": ["Memorize Spell"],
+      "6": ["Subclass Feature"],
+      "7": ["4th-level Spell Slots"],
+      "8": ["Ability Score Improvement / Feat"],
+      "9": ["5th-level Spell Slots"],
+      "10": ["Subclass Feature"],
+      "11": ["6th-level Spell Slots"],
+      "12": ["Ability Score Improvement / Feat"],
+      "13": ["7th-level Spell Slots"],
+      "14": ["Subclass Feature"],
+      "15": ["8th-level Spell Slots"],
+      "16": ["Ability Score Improvement / Feat"],
+      "17": ["9th-level Spell Slots"],
+      "18": ["Spell Mastery"],
+      "19": ["Epic Boon"],
+      "20": ["Signature Spells"]
+    },
+    "subclasses": [
+      {
+        "id": "evoker",
+        "name": "Evoker",
+        "features": {
+          "3": ["Evocation Savant", "Potent Cantrip"],
+          "6": ["Sculpt Spells"],
+          "10": ["Empowered Evocation"],
+          "14": ["Overchannel"]
+        }
+      }
+    ]
+  }
+]

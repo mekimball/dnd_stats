@@ -2,7 +2,7 @@
   <h1 style="text-align: center; margin-bottom: 2rem;">🛡️ D&D 2024 Background Finder</h1>
 
   <!-- Form configured with data-turbo-frame -->
-  <%= form_with url: root_path, method: :get, data: { turbo_frame: "backgrounds_results" }, id: "filter-form", style: "background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 2rem;" do |f| %>
+  <%= form_with url: backgrounds_path, method: :get, data: { turbo_frame: "backgrounds_results" }, id: "filter-form", style: "background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 2rem;" do |f| %>
 
     <!-- Mode Switcher Radio Buttons -->
     <div style="display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 1.5rem;">
@@ -43,7 +43,7 @@
 
     <!-- Reset Link -->
     <div style="text-align: center; margin-top: 0.5rem;">
-      <%= link_to "Reset Filters", root_path, style: "color: #64748b; text-decoration: none; font-size: 0.85rem;" %>
+      <%= link_to "Reset Filters", backgrounds_path, style: "color: #64748b; text-decoration: none; font-size: 0.85rem;" %>
     </div>
 
   <% end %>

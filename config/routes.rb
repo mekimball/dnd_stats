@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  root "backgrounds#index"
+  root "characters#index"
+
+  resources :characters
+  resources :backgrounds, only: [:index]
 end

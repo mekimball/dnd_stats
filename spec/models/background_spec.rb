@@ -33,6 +33,26 @@ RSpec.describe Background, type: :model do
     end
   end
 
+  describe '.find' do
+    it 'finds a background by id' do
+      bg = Background.find('soldier')
+      expect(bg).not_to be_nil
+      expect(bg.name).to eq('Soldier')
+    end
+
+    it 'finds a background by parameterized name' do
+      bg = Background.find('criminal')
+      expect(bg).not_to be_nil
+      expect(bg.name).to eq('Criminal')
+    end
+
+    it 'returns nil for blank or non-existent IDs' do
+      expect(Background.find(nil)).to be_nil
+      expect(Background.find('')).to be_nil
+      expect(Background.find('invalid_id')).to be_nil
+    end
+  end
+
   describe '.all_attributes' do
     it 'returns the standard 6 D&D attribute abbreviations' do
       expect(Background.all_attributes).to eq(%w[STR DEX CON INT WIS CHA])
@@ -92,6 +112,17 @@ RSpec.describe Background, type: :model do
           expect(bg.attributes).to include('DEX')
         end
       end
+    end
+  end
+
+  describe '#as_json' do
+    it 'returns a hash suitable for JSON serialization' do
+      bg = Background.find('soldier')
+      json = bg.as_json
+
+      expect(json['name']).to eq('Soldier')
+      expect(json['feat']).to eq('Savage Attacker')
+      expect(json['attributes']).to include('STR', 'DEX', 'CON')
     end
   end
 end
