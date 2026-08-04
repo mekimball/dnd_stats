@@ -9,31 +9,38 @@
     "origin_feat_granted": true,
     "description": "Resourceful, skillful, and versatile innovators found across the multiverse."
   },
-  {
-    "id": "elf",
-    "name": "Elf",
-    "speed": 30,
-    "size": "Medium",
-    "traits": ["Darkvision (60 ft)", "Elven Lineage", "Fey Ancestry", "Keen Senses", "Trance"],
-    "keen_senses_choices": ["insight", "perception", "survival"],
-    "lineages": [
-      {
-        "id": "drow",
-        "name": "Drow",
-        "darkvision": 120,
-        "spells": { "1": "Dancing Lights", "3": "Faerie Fire", "5": "Darkness" }
-      },
-      {
-        "id": "high_elf",
-        "name": "High Elf",
-        "spells": { "1": "Prestidigitation", "3": "Detect Magic", "5": "Misty Step" }
-      },
-      {
-        "id": "wood_elf",
-        "name": "Wood Elf",
-        "speed_bonus": 5,
-        "spells": { "1": "Druidcraft", "3": "Longstrider", "5": "Pass without Trace" }
-      }
-    ]
-  }
-]
+    {
+      "id": "elf",
+      "name": "Elf",
+      "size": "Medium",
+      "speed": 30,
+      "description": "As an Elf, you have supernatural traits derived from your ancient lineage, keen senses, darkvision, and a trancelike meditation routine.",
+      "traits": [
+        { "name": "Darkvision", "description": "You have Darkvision with a range of 60 feet." },
+        { "name": "Fey Ancestry", "description": "Advantage on saving throws to avoid or end the Charmed condition." },
+        { "name": "Keen Senses", "description": "Proficiency in Insight, Perception, or Survival." },
+        { "name": "Trance", "description": "You don't need sleep and can finish a Long Rest in 4 hours." }
+      ],
+      "lineages": [
+        {
+          "id": "drow",
+          "name": "Drow",
+          "speed_bonus": 0,
+          "darkvision_range": 120,
+          "description": "Darkvision increases to 120 ft. You know Dancing Lights (Lvl 1), Faerie Fire (Lvl 3), and Darkness (Lvl 5)."
+        },
+        {
+          "id": "high_elf",
+          "name": "High Elf",
+          "speed_bonus": 0,
+          "description": "You know Prestidigitation (replaceable on Long Rest), Detect Magic (Lvl 3), and Misty Step (Lvl 5)."
+        },
+        {
+          "id": "wood_elf",
+          "name": "Wood Elf",
+          "speed_bonus": 5,
+          "description": "Speed increases to 35 ft. You know Druidcraft (Lvl 1), Longstrider (Lvl 3), and Pass without Trace (Lvl 5)."
+        }
+      ]
+    }
+  ]
