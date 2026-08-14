@@ -5,7 +5,7 @@ RSpec.describe Background, type: :model do
     it 'assigns reader attributes from a hash' do
       data = {
         'name' => 'Criminal',
-        'attributes' => ['DEX', 'CON', 'INT'],
+        'attributes' => [ 'DEX', 'CON', 'INT' ],
         'feat' => 'Alert',
         'description' => 'Experienced in surviving outside the law.'
       }
@@ -13,7 +13,7 @@ RSpec.describe Background, type: :model do
       bg = Background.new(data)
 
       expect(bg.name).to eq('Criminal')
-      expect(bg.attributes).to eq(['DEX', 'CON', 'INT'])
+      expect(bg.attributes).to eq([ 'DEX', 'CON', 'INT' ])
       expect(bg.feat).to eq('Alert')
       expect(bg.description).to eq('Experienced in surviving outside the law.')
     end
@@ -67,7 +67,7 @@ RSpec.describe Background, type: :model do
 
     context "when search_mode is 'attributes'" do
       it 'filters backgrounds containing all selected attributes' do
-        results = Background.search(search_mode: 'attributes', selected_attrs: ['DEX', 'CON'])
+        results = Background.search(search_mode: 'attributes', selected_attrs: [ 'DEX', 'CON' ])
 
         expect(results).not_to be_empty
         results.each do |bg|
@@ -76,7 +76,7 @@ RSpec.describe Background, type: :model do
       end
 
       it 'handles lowercase inputs and normalizes to uppercase' do
-        results = Background.search(search_mode: 'attributes', selected_attrs: ['dex'])
+        results = Background.search(search_mode: 'attributes', selected_attrs: [ 'dex' ])
 
         expect(results).not_to be_empty
         results.each do |bg|
@@ -85,7 +85,7 @@ RSpec.describe Background, type: :model do
       end
 
       it 'ignores blank strings in selected_attrs array' do
-        results = Background.search(search_mode: 'attributes', selected_attrs: ['DEX', ''])
+        results = Background.search(search_mode: 'attributes', selected_attrs: [ 'DEX', '' ])
 
         expect(results).not_to be_empty
         results.each do |bg|
