@@ -11,7 +11,7 @@ class Background
 
   def self.all
     @all ||= begin
-     file_path = Rails.root.join('config', 'data', 'backgrounds.json')
+     file_path = Rails.root.join("config", "data", "backgrounds.json")
      data = JSON.load_file(file_path)
      data.map { |background| Background.new(background) }
    end
@@ -26,9 +26,9 @@ class Background
   end
 
   def self.search(param)
-    if param[:search_mode] == 'feat' && param[:selected_feat].present?
+    if param[:search_mode] == "feat" && param[:selected_feat].present?
       all.select { |bg| bg.feat == param[:selected_feat] }
-    elsif param[:search_mode] == 'attributes'
+    elsif param[:search_mode] == "attributes"
       selected = Array(param[:selected_attrs]).reject(&:blank?).map(&:upcase)
       if selected.present?
         all.select { |bg| (selected - bg.attributes).empty? }
