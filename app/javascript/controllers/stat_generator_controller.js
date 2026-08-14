@@ -5,24 +5,36 @@ const STAT_NAMES = ["strength", "dexterity", "constitution", "intelligence", "wi
 
 export default class extends Controller {
     static targets = [
-        "methodTab", "pointBuySection", "arraySection", "rollSection", "manualSection",
+        "methodTab", "methodInput", "pointBuySection", "arraySection", "rollSection", "manualSection",
         "pointsRemaining", "arraySelect", "rollSelect", "rolledPool",
         "strInput", "dexInput", "conInput", "intInput", "wisInput", "chaInput"
     ]
 
     connect() {
         this.rolledScores = []
-        this.selectMethod("standard_array")
+
+        // Read saved method from the hidden field if present, or default to "standard_array"
+        const savedMethod = (this.hasMethodInputTarget && this.methodInputTarget.value)
+            ? this.methodInputTarget.value
+            : "standard_array"
+
+        // Pass `false` for resetInputs so existing character stats aren't wiped on load
+        this.selectMethod(savedMethod, false)
     }
 
     // --- Method Selection ---
     changeMethod(event) {
         const method = event.currentTarget.dataset.method
-        this.selectMethod(method)
+        this.selectMethod(method, true)
     }
 
-    selectMethod(method) {
+    selectMethod(method, resetInputs = true) {
         this.activeMethod = method
+
+        // Sync hidden input so Rails saves character[generation_method]
+        if (this.hasMethodInputTarget) {
+            this.methodInputTarget.value = method
+        }
 
         // Highlight active method tab
         this.methodTabTargets.forEach(tab => {
@@ -39,8 +51,15 @@ export default class extends Controller {
         this.rollSectionTarget.style.display = method === "roll" ? "block" : "none"
         this.manualSectionTarget.style.display = method === "manual" ? "block" : "none"
 
-        if (method === "point_buy") this.resetPointBuy()
-        if (method === "standard_array") this.resetStandardArray()
+        // Only reset stat values if user explicitly clicked a method tab
+        if (resetInputs) {
+            if (method === "point_buy") this.resetPointBuy()
+            if (method === "standard_array") this.resetStandardArray()
+        } else {
+            // When editing/loading, refresh summary UI without wiping numbers
+            if (method === "point_buy") this.updatePointBuySummary()
+            if (method === "standard_array") this.syncStandardArrayFromInputs()
+        }
     }
 
     // --- Point Buy Logic ---
@@ -81,6 +100,17 @@ export default class extends Controller {
     resetStandardArray() {
         this.arraySelectTargets.forEach(select => select.value = "")
         STAT_NAMES.forEach(stat => this.setStatValue(stat, 8))
+        this.updateArrayDropdowns()
+    }
+
+    syncStandardArrayFromInputs() {
+        this.arraySelectTargets.forEach(select => {
+            const stat = select.dataset.stat
+            const currentVal = this.getStatValue(stat)
+            if ([15, 14, 13, 12, 10, 8].includes(currentVal)) {
+                select.value = currentVal.toString()
+            }
+        })
         this.updateArrayDropdowns()
     }
 

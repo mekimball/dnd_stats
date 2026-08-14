@@ -50,12 +50,30 @@ class CharactersController < ApplicationController
     @species_options = Species.all
   end
 
+  private
+
   def character_params
     params.require(:character).permit(
-      :name, :species_id, :character_class_id, :subclass_id, :background_id, :level,
-      :strength, :dexterity, :constitution, :intelligence, :wisdom, :charisma,
+      :name,
+      :level,
+      :character_class_id,
+      :subclass_id,
+      :species_id,
+      :species_lineage,
+      :lineage_spellcasting_ability,
+      :size,
+      :background_id,
+      :strength,
+      :dexterity,
+      :constitution,
+      :intelligence,
+      :wisdom,
+      :charisma,
+      :class_equipment_option,
+      :background_equipment_option,
+      ability_boosts: {},
       skill_proficiencies: [],
-      equipment: []
+      custom_equipment: []
     )
   end
 end

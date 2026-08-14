@@ -10,21 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_24_225205) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_04_014539) do
   create_table "characters", force: :cascade do |t|
     t.text "ability_boosts", default: "{}"
+    t.string "background_equipment_option"
     t.string "background_id"
     t.string "character_class_id"
     t.integer "charisma"
+    t.string "class_equipment_option"
     t.integer "constitution"
     t.datetime "created_at", null: false
+    t.json "custom_equipment"
     t.integer "dexterity"
     t.json "equipment"
+    t.string "generation_method"
     t.integer "intelligence"
     t.integer "level"
+    t.string "lineage_spellcasting_ability"
     t.string "name"
+    t.string "size"
     t.json "skill_proficiencies"
     t.string "species_id"
+    t.string "species_lineage"
     t.integer "strength"
     t.string "subclass_id"
     t.datetime "updated_at", null: false

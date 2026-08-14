@@ -1,7 +1,7 @@
 class Character < ApplicationRecord
   validates :name, :species_id, :character_class_id, presence: true
 
-  # Native attribute typecasting for JSON/Text columns
+  # Native attribute typecasting for Rails & JSON columns
   attribute :level, :integer, default: 1
   attribute :strength, :integer, default: 10
   attribute :dexterity, :integer, default: 10
@@ -9,11 +9,19 @@ class Character < ApplicationRecord
   attribute :intelligence, :integer, default: 10
   attribute :wisdom, :integer, default: 10
   attribute :charisma, :integer, default: 10
+  attribute :size, :string, default: "Medium"
+  attribute :species_lineage, :string
+  attribute :lineage_spellcasting_ability, :string
+  attribute :generation_method, :string, default: "manual"
+  attribute :class_equipment_option, :string
+  attribute :background_equipment_option, :string
+  attribute :custom_equipment, :json, default: []
   attribute :ability_boosts, :json, default: {}
   attribute :skill_proficiencies, :json, default: []
   attribute :equipment, :json, default: []
 
   before_save :clear_subclass_if_under_level_3
+  before_save :build_equipment_list
 
   # 18 Standard D&D 5e Skills mapped to ability scores
   SKILLS = {
@@ -59,13 +67,43 @@ class Character < ApplicationRecord
     subclass&.fetch("name", nil)
   end
 
-  # Background Bonus Lookup Helper
+  # Background Bonus Lookup Helper (Handles {"plus_two" => "STR", "plus_one_a" => "DEX"})
   def background_bonus_for(stat_name)
     boosts = ability_boosts
     boosts = JSON.parse(boosts) if boosts.is_a?(String)
     return 0 unless boosts.is_a?(Hash)
 
-    boosts.transform_keys(&:to_s)[stat_name.to_s].to_i
+    target_stat = stat_name.to_s.downcase
+    target_abbr = target_stat[0..2] # e.g. "str", "dex"
+
+    bonus = 0
+
+    boosts.each do |slot, chosen_stat|
+      next if chosen_stat.blank?
+
+      chosen_norm = chosen_stat.to_s.downcase
+      matches_stat = (chosen_norm == target_stat || chosen_norm == target_abbr)
+
+      if matches_stat
+        if slot.to_s == "plus_two"
+          bonus += 2
+        elsif slot.to_s.start_with?("plus_one")
+          bonus += 1
+        end
+      end
+    end
+
+    # Fallback if stored directly as {"strength" => 2}
+    if bonus.zero?
+      boosts.each do |k, val|
+        k_norm = k.to_s.downcase
+        if (k_norm == target_stat || k_norm == target_abbr) && val.is_a?(Numeric)
+          bonus += val.to_i
+        end
+      end
+    end
+
+    bonus
   end
 
   # Ability Score Calculations
@@ -119,18 +157,17 @@ class Character < ApplicationRecord
   # Derived Combat Stats
   def armor_class
     gear = equipment || []
-    base_ac = 10
     dex_mod = modifier_for(:dexterity)
 
-    if gear.any? { |item| item.include?("Chain Mail") }
+    if gear.any? { |item| item.to_s.downcase.include?("chain mail") }
       base_ac = 16
-    elsif gear.any? { |item| item.include?("Leather Armor") }
+    elsif gear.any? { |item| item.to_s.downcase.include?("leather armor") }
       base_ac = 11 + dex_mod
     else
       base_ac = 10 + dex_mod
     end
 
-    base_ac += 2 if gear.any? { |item| item.include?("Shield") }
+    base_ac += 2 if gear.any? { |item| item.to_s.downcase.include?("shield") }
     base_ac
   end
 
@@ -169,5 +206,34 @@ class Character < ApplicationRecord
 
   def clear_subclass_if_under_level_3
     self.subclass_id = nil if level < 3
+  end
+
+  def build_equipment_list
+    return if class_equipment_option.blank? && background_equipment_option.blank? && custom_equipment.blank?
+
+    compiled_items = []
+
+    # 1. Class Equipment Choice
+    if character_class.present? && class_equipment_option.present?
+      loadouts = character_class.starting_equipment || {}
+      selected_items = loadouts[class_equipment_option]
+      compiled_items += Array(selected_items)
+    end
+
+    # 2. Background Equipment Choice
+    if background.present? && background_equipment_option.present?
+      if background_equipment_option == "B"
+        compiled_items << "50 GP (Background Gold)"
+      elsif background.equipment.present?
+        compiled_items << background.equipment
+      end
+    end
+
+    # 3. Custom Equipment Selected from Catalog
+    if custom_equipment.present?
+      compiled_items += Array(custom_equipment).reject(&:blank?)
+    end
+
+    self.equipment = compiled_items.compact.uniq
   end
 end

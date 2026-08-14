@@ -31,9 +31,10 @@
 
     <!-- STEP 1: ABILITIES -->
     <div data-wizard-target="step" data-controller="stat-generator">
-      <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 1: Ability Scores</h2>
-      <p class="text-slate-600 mb-6 text-sm">Choose how you want to generate your base ability scores:</p>
-
+      <input type="hidden"
+             name="character[generation_method]"
+             data-stat-generator-target="methodInput"
+             value="<%= character.generation_method || 'standard_array' %>">
       <!-- Generation Method Tabs -->
       <div class="flex flex-wrap gap-2 mb-8 bg-slate-900 p-2 rounded-lg">
         <button type="button"
@@ -71,8 +72,8 @@
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-200">
           <span class="font-bold text-slate-800">Point Buy Budget</span>
           <span class="text-lg font-bold text-red-600">
-        Points Remaining: <span data-stat-generator-target="pointsRemaining">27</span> / 27
-      </span>
+            Points Remaining: <span data-stat-generator-target="pointsRemaining">27</span> / 27
+          </span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <% %w[strength dexterity constitution intelligence wisdom charisma].each do |stat| %>
@@ -132,7 +133,6 @@
           </p>
         </div>
 
-        <!-- Dropdowns to assign rolled scores -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
           <% %w[strength dexterity constitution intelligence wisdom charisma].each do |stat| %>
             <div class="flex items-center justify-between p-3 bg-white rounded border border-slate-200 shadow-sm">
@@ -154,7 +154,7 @@
         <p class="text-sm text-slate-600">Type custom score values directly into the input fields below (range 3–18).</p>
       </div>
 
-      <!-- ACTUAL FORM INPUTS (Synced to controller & submitted to Rails) -->
+      <!-- BASE STAT INPUTS -->
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 pt-4 border-t border-slate-200">
         <div>
           <%= f.label :strength, "STR", class: "block font-bold text-xs text-slate-500 uppercase tracking-wider mb-1" %>
@@ -187,60 +187,88 @@
       </div>
     </div>
 
-    <div data-controller="class-selection"
-         data-class-selection-classes-value="<%= CharacterClass.all.map { |c| { id: c.id, name: c.name, subclasses: c.subclasses || [] } }.to_json %>">
+    <!-- STEP 2: CLASS & SUBCLASS -->
+    <div data-wizard-target="step"
+         style="display: none;"
+         data-controller="class-selection"
+         data-class-selection-classes-value="<%= CharacterClass.all.map { |c| {
+           id: c.id,
+           name: c.name,
+           skill_choice_count: (c.try(:skill_choice_count) || 2),
+           skill_options: (c.try(:skill_options) || []),
+           features: (c.try(:features) || {}),
+           subclasses: (c.try(:subclasses) || [])
+         } }.to_json %>"
+         data-class-selection-saved-skills-value="<%= Array(character.skill_proficiencies).to_json %>">
+      <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 2: Class & Subclass</h2>
+      <p class="text-slate-600 mb-6 text-sm">Select your character's class, level, skill proficiencies, and subclass options.</p>
 
-      <!-- STEP 2: CLASS & SUBCLASS -->
-      <div data-wizard-target="step" style="display: none;">
-        <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 2: Class & Subclass</h2>
-        <p class="text-slate-600 mb-6 text-sm">Select your character's starting class and level.</p>
-
-        <!-- Character Level Selector -->
-        <div class="mb-6 max-w-xs">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Level Selector -->
+        <div>
           <%= f.label :level, "Character Level", class: "block font-semibold text-slate-700 mb-1" %>
           <%= f.number_field :level,
                              value: character.level || 1,
                              min: 1, max: 20,
                              class: "w-full border border-slate-300 rounded p-2.5 font-bold text-lg text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none",
                              "data-class-selection-target": "levelInput",
-                             "data-action": "input->class-selection#updateSubclasses change->class-selection#updateSubclasses" %>
+                             "data-action": "input->class-selection#updateAll change->class-selection#updateAll" %>
         </div>
 
         <!-- Class Selector -->
-        <div class="mb-6">
+        <div class="md:col-span-2">
           <%= f.label :character_class_id, "Class", class: "block font-semibold text-slate-700 mb-1" %>
           <%= f.select :character_class_id,
                        CharacterClass.all.map { |c| [c.name, c.id] },
                        { prompt: "Select a Class" },
                        class: "w-full border border-slate-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none",
                        "data-class-selection-target": "classSelect",
-                       "data-action": "change->class-selection#updateSubclasses" %>
-        </div>
-
-        <!-- Subclass Selector (Dynamic: Only visible at Level 3+) -->
-        <div data-class-selection-target="subclassContainer" style="display: none;" class="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-          <%= f.label :subclass_id, "Subclass (Unlocked at Level 3)", class: "block font-bold text-amber-900 mb-1" %>
-          <select name="character[subclass_id]"
-                  data-class-selection-target="subclassSelect"
-                  data-selected-subclass="<%= f.object.subclass_id %>"
-                  class="w-full border border-amber-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
-            <option value="">Select a Subclass</option>
-          </select>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="flex justify-between mt-8">
-          <button type="button" data-action="click->wizard#previous" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded transition">
-            &larr; Back
-          </button>
-          <button type="button" data-action="click->wizard#next" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded shadow transition">
-            Next: Choose Species &rarr;
-          </button>
+                       "data-action": "change->class-selection#updateAll" %>
         </div>
       </div>
 
-    </div>
+      <!-- Class Skill Proficiencies Selector -->
+      <div data-class-selection-target="skillsContainer" style="display: none;" class="mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
+        <strong data-class-selection-target="skillsHeading" class="block font-bold text-slate-900 text-sm mb-3"></strong>
+        <div data-class-selection-target="skillsList" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+      </div>
 
+      <!-- Subclass Selector (Unlocked at Level 3+) -->
+      <div data-class-selection-target="subclassContainer" style="display: none;" class="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
+        <%= f.label :subclass_id, "Subclass (Unlocked at Level 3)", class: "block font-bold text-amber-950 mb-1" %>
+        <select name="character[subclass_id]"
+                data-class-selection-target="subclassSelect"
+                data-selected-subclass="<%= f.object.subclass_id %>"
+                data-action="change->class-selection#renderUnlockedSubclassFeatures"
+                class="w-full border border-amber-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none mb-4">
+          <option value="">Select a Subclass</option>
+        </select>
+
+        <!-- Subclass Features List -->
+        <div data-class-selection-target="subclassFeaturesContainer" style="display: none;">
+          <h4 class="font-bold text-xs uppercase tracking-wider text-amber-900 mb-2">Unlocked Subclass Features</h4>
+          <div data-class-selection-target="subclassFeaturesList" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Unlocked Class Features Readout -->
+      <div data-class-selection-target="unlockedFeaturesContainer" style="display: none;" class="mb-8 p-5 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-3">
+          Unlocked Class Features (<span data-class-selection-target="levelDisplay">Level 1</span>)
+        </h3>
+        <div data-class-selection-target="featuresList" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Step Controls -->
+      <div class="flex justify-between mt-8">
+        <button type="button" data-action="click->wizard#previous" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded transition">
+          &larr; Back
+        </button>
+        <button type="button" data-action="click->wizard#next" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded shadow transition">
+          Next: Choose Species &rarr;
+        </button>
+      </div>
+    </div>
     <!-- STEP 3: SPECIES -->
     <div data-wizard-target="step"
          style="display: none;"
@@ -250,7 +278,6 @@
       <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 3: Choose Species</h2>
       <p class="text-slate-600 mb-6 text-sm">Select a species to view its traits, speed, and lineage options.</p>
 
-      <!-- Species Dropdown -->
       <div class="mb-6">
         <%= f.label :species_id, "Species", class: "block font-semibold text-slate-700 mb-1" %>
         <%= f.select :species_id,
@@ -261,7 +288,14 @@
                      "data-action": "change->species-selection#updateDetails" %>
       </div>
 
-      <!-- Elven Lineage Dropdown (Conditional) -->
+      <div data-species-selection-target="sizeChoiceContainer" style="display: none;" class="mb-6 p-4 bg-slate-100 rounded-lg border border-slate-200">
+        <label class="block font-bold text-slate-900 mb-1">Character Size</label>
+        <select name="character[size]"
+                data-species-selection-target="sizeSelect"
+                class="w-full border border-slate-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+        </select>
+      </div>
+
       <div data-species-selection-target="lineageContainer" style="display: none;" class="mb-6 p-4 bg-slate-100 rounded-lg border border-slate-200">
         <label class="block font-bold text-slate-900 mb-1">Elven Lineage</label>
         <select name="character[species_lineage]"
@@ -270,14 +304,11 @@
                 class="w-full border border-slate-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none mb-3">
           <option value="">Select a Lineage</option>
         </select>
-
         <div data-species-selection-target="lineageDetails"></div>
       </div>
 
-      <!-- Lineage Spellcasting Ability Dropdown (INT, WIS, CHA) -->
       <div data-species-selection-target="spellcastingAbilityContainer" style="display: none;" class="mb-6 p-4 bg-slate-100 rounded-lg border border-slate-200">
         <label class="block font-bold text-slate-900 mb-1">Lineage Spellcasting Ability</label>
-        <p class="text-xs text-slate-600 mb-2">Choose the ability score used to cast your lineage spells:</p>
         <select name="character[lineage_spellcasting_ability]" class="w-full border border-slate-300 rounded p-2.5 font-medium text-slate-800 bg-white shadow-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
           <option value="intelligence">Intelligence</option>
           <option value="wisdom">Wisdom</option>
@@ -285,7 +316,6 @@
         </select>
       </div>
 
-      <!-- Dynamic Species Details Card -->
       <div data-species-selection-target="detailsContainer" style="display: none;" class="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
         <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
           <h3 data-species-selection-target="name" class="text-xl font-bold text-slate-900"></h3>
@@ -304,7 +334,6 @@
         </div>
       </div>
 
-      <!-- Step Navigation -->
       <div class="flex justify-between mt-8">
         <button type="button" data-action="click->wizard#previous" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded transition">
           &larr; Back
@@ -324,7 +353,6 @@
       <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 4: Choose Background</h2>
       <p class="text-slate-600 mb-6 text-sm">Filter backgrounds by ability score choices or choose directly from the list.</p>
 
-      <!-- Filter Bar: Ability Scores -->
       <div class="mb-6 p-4 bg-slate-900 rounded-lg text-white">
         <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Filter by Ability Scores Given:</label>
         <div class="flex flex-wrap gap-4">
@@ -341,7 +369,6 @@
         </div>
       </div>
 
-      <!-- Background Dropdown -->
       <div class="mb-6">
         <%= f.label :background_id, "Background", class: "block font-semibold text-slate-700 mb-1" %>
         <select name="character[background_id]"
@@ -352,13 +379,11 @@
         </select>
       </div>
 
-      <!-- Detailed Background Card -->
       <div data-background-selection-target="detailsContainer" style="display: none;" class="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
         <h3 data-background-selection-target="name" class="text-xl font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2"></h3>
 
         <p data-background-selection-target="description" class="text-slate-600 text-sm mb-6 leading-relaxed italic"></p>
 
-        <!-- Key Details Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div class="p-3 bg-white rounded border border-slate-200">
             <strong class="text-xs uppercase tracking-wider text-slate-500 block mb-1">Origin Feat</strong>
@@ -378,12 +403,10 @@
           </div>
         </div>
 
-        <!-- Ability Score Boost Allocation (1 to 3 stats) -->
         <div class="pt-4 border-t border-slate-200">
           <div class="flex items-center justify-between mb-4">
             <h4 class="font-bold text-sm uppercase tracking-wider text-slate-800">Background Ability Score Boosts</h4>
 
-            <!-- Boost Mode Selector (+2/+1 vs +1/+1/+1) -->
             <select data-background-selection-target="boostMode"
                     data-action="change->background-selection#changeBoostMode"
                     class="border border-slate-300 rounded px-3 py-1 bg-white font-semibold text-xs text-slate-700">
@@ -396,7 +419,6 @@
         </div>
       </div>
 
-      <!-- Step Navigation -->
       <div class="flex justify-between mt-8">
         <button type="button" data-action="click->wizard#previous" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold rounded transition">
           &larr; Back
@@ -412,12 +434,12 @@
          style="display: none;"
          data-controller="equipment"
          data-equipment-classes-value="<%= CharacterClass.all.map { |c| { id: c.id, starting_equipment: c.starting_equipment || {} } }.to_json %>"
-         data-equipment-backgrounds-value="<%= Background.all.map(&:as_json).to_json %>">
+         data-equipment-backgrounds-value="<%= Background.all.map(&:as_json).to_json %>"
+         data-equipment-items-value="<%= Item.all.map(&:as_json).to_json %>">
 
       <h2 class="text-2xl font-bold mb-2 text-slate-900">Step 5: Character Details & Equipment</h2>
       <p class="text-slate-600 mb-6 text-sm">Set your character's name and customize your starting gear.</p>
 
-      <!-- Character Name -->
       <div class="mb-8">
         <%= f.label :name, "Character Name", class: "block font-bold text-slate-900 mb-1" %>
         <%= f.text_field :name,
@@ -442,12 +464,12 @@
           <div data-equipment-target="backgroundOptions"></div>
         </div>
 
-        <!-- Custom Additional Items -->
+        <!-- Catalog Item Selection -->
         <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
           <div class="flex justify-between items-center mb-3">
             <div>
               <h3 class="font-bold text-slate-900 text-base">Additional Items & Possessions</h3>
-              <p class="text-xs text-slate-500">Add any extra weapons, magic items, or trinkets:</p>
+              <p class="text-xs text-slate-500">Select extra items from the catalog:</p>
             </div>
             <button type="button"
                     data-action="click->equipment#addCustomItem"
@@ -456,17 +478,7 @@
             </button>
           </div>
 
-          <div data-equipment-target="customItemsContainer" class="space-y-2">
-            <div class="flex gap-2 items-center">
-              <input type="text"
-                     name="character[custom_equipment][]"
-                     placeholder="e.g. Healing Potion, Rope (50 ft.), Gemstone"
-                     class="w-full border border-slate-300 rounded p-2 text-sm text-slate-800 focus:ring-2 focus:ring-red-600 focus:outline-none">
-              <button type="button"
-                      data-action="click->equipment#removeCustomItem"
-                      class="px-3 py-2 bg-slate-200 hover:bg-red-100 text-slate-600 hover:text-red-700 font-bold rounded text-xs transition">&times;</button>
-            </div>
-          </div>
+          <div data-equipment-target="customItemsContainer" class="space-y-2"></div>
         </div>
       </div>
 
