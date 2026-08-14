@@ -16,14 +16,18 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '4.0.5'
+          working-directory: 'dnd_stats-character_creation'
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
-      
+        working-directory: dnd_stats-character_creation
+
       - name: Scan for known security vulnerabilities in gems used
         run: bin/bundler-audit
-      
+        working-directory: dnd_stats-character_creation
+
   scan_js:
     runs-on: ubuntu-latest
 
@@ -34,10 +38,13 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '4.0.5'
+          working-directory: 'dnd_stats-character_creation'
           bundler-cache: true
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
+        working-directory: dnd_stats-character_creation
 
   lint:
     runs-on: ubuntu-latest
@@ -50,18 +57,20 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '4.0.5'
+          working-directory: 'dnd_stats-character_creation'
           bundler-cache: true
 
       - name: Prepare RuboCop cache
         uses: actions/cache@v4
         env:
-          DEPENDENCIES_HASH: ${{ hashFiles('.ruby-version', '**/.rubocop.yml', '**/.rubocop_todo.yml', 'Gemfile.lock') }}
+          DEPENDENCIES_HASH: ${{ hashFiles('dnd_stats-character_creation/.ruby-version', 'dnd_stats-character_creation/**/.rubocop.yml', 'dnd_stats-character_creation/**/.rubocop_todo.yml', 'dnd_stats-character_creation/Gemfile.lock') }}
         with:
-          path: ${{ env.RUBOCOP_CACHE_ROOT }}
+          path: dnd_stats-character_creation/${{ env.RUBOCOP_CACHE_ROOT }}
           key: rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-${{ github.ref_name == github.event.repository.default_branch && github.run_id || 'default' }}
           restore-keys: |
             rubocop-${{ runner.os }}-${{ env.DEPENDENCIES_HASH }}-
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
-
+        working-directory: dnd_stats-character_creation
