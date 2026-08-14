@@ -33,8 +33,8 @@ RSpec.describe 'Characters', type: :request do
         wisdom: 12,
         charisma: 10,
         ability_boosts: { 'dexterity' => 2, 'wisdom' => 1 },
-        skill_proficiencies: ['perception', 'survival'],
-        equipment: ['Studded Leather Armor', 'Longbow & 20 Arrows']
+        skill_proficiencies: [ 'perception', 'survival' ],
+        equipment: [ 'Studded Leather Armor', 'Longbow & 20 Arrows' ]
       }
     }
   end

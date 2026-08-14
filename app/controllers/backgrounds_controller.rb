@@ -3,7 +3,7 @@ class BackgroundsController < ApplicationController
     @all_attributes = Background.all_attributes
     @all_feats = Background.all_feats
 
-    @search_mode = params[:search_mode] || 'attributes'
+    @search_mode = params[:search_mode] || "attributes"
     @selected_attrs = Array(params[:attributes]).take(3)
     @selected_feat = params[:feat]
 

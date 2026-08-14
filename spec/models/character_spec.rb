@@ -15,8 +15,8 @@ RSpec.describe Character, type: :model do
       wisdom: 10,
       charisma: 8,
       ability_boosts: { 'strength' => 2, 'constitution' => 1 },
-      skill_proficiencies: ['athletics', 'perception'],
-      equipment: ['Chain Mail', 'Greatsword', 'Shield']
+      skill_proficiencies: [ 'athletics', 'perception' ],
+      equipment: [ 'Chain Mail', 'Greatsword', 'Shield' ]
     )
   end
 

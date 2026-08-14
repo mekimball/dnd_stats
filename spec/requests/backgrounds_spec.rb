@@ -14,7 +14,7 @@ RSpec.describe 'Backgrounds', type: :request do
     end
 
     it 'filters backgrounds by attribute params' do
-      get backgrounds_path, params: { search_mode: 'attributes', attributes: ['STR', 'DEX', 'CON'] }
+      get backgrounds_path, params: { search_mode: 'attributes', attributes: [ 'STR', 'DEX', 'CON' ] }
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Soldier')
     end

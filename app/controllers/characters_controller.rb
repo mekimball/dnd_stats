@@ -1,6 +1,6 @@
 class CharactersController < ApplicationController
-  before_action :set_character, only: [:show, :edit, :update, :destroy]
-  before_action :load_options, only: [:new, :create, :edit, :update]
+  before_action :set_character, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_options, only: [ :new, :create, :edit, :update ]
 
   def index
     @characters = Character.order(created_at: :desc)

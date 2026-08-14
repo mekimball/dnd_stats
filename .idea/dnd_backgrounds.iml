@@ -135,7 +135,7 @@
     <orderEntry type="library" scope="PROVIDED" name="solid_cable (v4.0.2, mise: 4.0.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_cache (v1.0.10, mise: 4.0.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_queue (v1.4.0, mise: 4.0.5) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v2.9.5, mise: 4.0.5) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v2.9.6, mise: 4.0.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sshkit (v1.25.0, mise: 4.0.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stimulus-rails (v1.3.4, mise: 4.0.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.5.0, mise: 4.0.5) [gem]" level="application" />
